@@ -102,6 +102,7 @@ class ViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(SpotifyImages.addButton, for: .normal)
         button.tintColor = .white
+        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -184,7 +185,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
+        view.backgroundColor = .brown
         setupUI()
     }
     func setupUI() {
@@ -282,7 +283,18 @@ class ViewController: UIViewController {
     }
     
     @objc func shuffleButtonTapped() {
-        let spotifyGreen = UIColor(red: 30/255, green: 215/255, blue: 96/255, alpha: 1)
+        let spotifyGreen = SpotifyColors.spotifyGreen
         shuffleButton.tintColor = shuffleButton.tintColor == .white ? spotifyGreen : .white
+    }
+    
+    @objc private func addButtonTapped() {
+        let spotifyGreen = SpotifyColors.spotifyGreen
+        if addButton.tintColor == .white {
+            addButton.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+            addButton.tintColor = spotifyGreen
+        } else {
+            addButton.setImage(SpotifyImages.addButton, for: .normal)
+            addButton.tintColor = .white
+        }
     }
 }
