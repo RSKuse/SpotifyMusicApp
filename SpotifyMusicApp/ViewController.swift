@@ -14,6 +14,7 @@ class ViewController: UIViewController {
         imageView.image = UIImage(named: "album_cover")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 5
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -40,12 +41,14 @@ class ViewController: UIViewController {
         return label
     }()
     
-    lazy var playPauseButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "play_icon"), for: .normal)
-        button.tintColor = .white
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    lazy var songAndArtistTitleStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [songTitleLabel, artistLabel])
+        stackView.distribution = .fillProportionally
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        stackView.alignment = .leading
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     lazy var shuffleButton: UIButton = {
@@ -64,12 +67,30 @@ class ViewController: UIViewController {
         return button
     }()
     
+    lazy var playPauseButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "play_icon"), for: .normal)
+        button.tintColor = .white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     lazy var nextButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "next_icon"), for: .normal)
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+    
+    lazy var shufflePlayRewindStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [shuffleButton, previousButton, playPauseButton, nextButton])
+        stackView.distribution = .fillProportionally
+        stackView.axis = .horizontal
+        stackView.spacing = 50
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
 
     lazy var addButton: UIButton = {
@@ -157,18 +178,19 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black 
+        view.backgroundColor = .black
         setupUI()
     }
     
     func setupUI() {
+        
         view.addSubview(albumCoverImageView)
-        view.addSubview(songTitleLabel)
-        view.addSubview(artistLabel)
+        view.addSubview(songAndArtistTitleStackView)
         view.addSubview(playPauseButton)
         view.addSubview(shuffleButton)
         view.addSubview(previousButton)
         view.addSubview(nextButton)
+        view.addSubview(shufflePlayRewindStackView)
         view.addSubview(durationSlider)
         view.addSubview(currentTimeLabel)
         view.addSubview(durationLabel)
@@ -181,79 +203,71 @@ class ViewController: UIViewController {
         view.addSubview(shareButton)
         
         downArrowButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        downArrowButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        downArrowButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         downArrowButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         downArrowButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
-            
+        
         playlistLabel.centerYAnchor.constraint(equalTo: downArrowButton.centerYAnchor).isActive = true
         playlistLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         moreOptionsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        moreOptionsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        moreOptionsButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         moreOptionsButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         moreOptionsButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
-            
-        albumCoverImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        albumCoverImageView.topAnchor.constraint(equalTo: downArrowButton.bottomAnchor, constant: 20).isActive = true
-        albumCoverImageView.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        albumCoverImageView.heightAnchor.constraint(equalToConstant: 300).isActive = true
-            
-        songTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        songTitleLabel.topAnchor.constraint(equalTo: albumCoverImageView.bottomAnchor, constant: 20).isActive = true
-            
-        artistLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        artistLabel.topAnchor.constraint(equalTo: songTitleLabel.bottomAnchor, constant: 8).isActive = true
-            
-        durationSlider.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        durationSlider.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 20).isActive = true
-        durationSlider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        durationSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-            
-        currentTimeLabel.leadingAnchor.constraint(equalTo: durationSlider.leadingAnchor).isActive = true
-        currentTimeLabel.topAnchor.constraint(equalTo: durationSlider.bottomAnchor, constant: 8).isActive = true
         
-        durationLabel.trailingAnchor.constraint(equalTo: durationSlider.trailingAnchor).isActive = true
-        durationLabel.topAnchor.constraint(equalTo: durationSlider.bottomAnchor, constant: 8).isActive = true
+        albumCoverImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        albumCoverImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        albumCoverImageView.topAnchor.constraint(equalTo: downArrowButton.bottomAnchor, constant: 35).isActive = true
+        albumCoverImageView.heightAnchor.constraint(equalToConstant: 350).isActive = true
+        
+        songAndArtistTitleStackView.topAnchor.constraint(equalTo: albumCoverImageView.bottomAnchor, constant: 40).isActive = true
+        songAndArtistTitleStackView.leftAnchor.constraint(equalTo: durationSlider.leftAnchor).isActive = true
             
-        shuffleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
-        shuffleButton.topAnchor.constraint(equalTo: currentTimeLabel.bottomAnchor, constant: 20).isActive = true
-        shuffleButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        shuffleButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
-            
-        previousButton.leadingAnchor.constraint(equalTo: shuffleButton.trailingAnchor, constant: 20).isActive = true
-        previousButton.centerYAnchor.constraint(equalTo: shuffleButton.centerYAnchor).isActive = true
-        previousButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        previousButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
-            
-        playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        playPauseButton.centerYAnchor.constraint(equalTo: shuffleButton.centerYAnchor).isActive = true
-        playPauseButton.widthAnchor.constraint(equalToConstant: 32).isActive = true
-        playPauseButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
-            
-        nextButton.leadingAnchor.constraint(equalTo: playPauseButton.trailingAnchor, constant: 20).isActive = true
-        nextButton.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor).isActive = true
-        nextButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
-            
-        addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
-        addButton.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor).isActive = true
+        addButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        addButton.centerYAnchor.constraint(equalTo: songAndArtistTitleStackView.centerYAnchor).isActive = true
         addButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         addButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        
+        durationSlider.topAnchor.constraint(equalTo: songAndArtistTitleStackView.bottomAnchor, constant: 20).isActive = true
+        durationSlider.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        durationSlider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        
+        currentTimeLabel.leftAnchor.constraint(equalTo: durationSlider.leftAnchor).isActive = true
+        currentTimeLabel.topAnchor.constraint(equalTo: durationSlider.bottomAnchor, constant: 2).isActive = true
+        
+        durationLabel.rightAnchor.constraint(equalTo: durationSlider.rightAnchor).isActive = true
+        durationLabel.topAnchor.constraint(equalTo: durationSlider.bottomAnchor, constant: 2).isActive = true
+        
+        shufflePlayRewindStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        shufflePlayRewindStackView.topAnchor.constraint(equalTo: currentTimeLabel.bottomAnchor, constant: 20).isActive = true
+        
+        timerButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        timerButton.centerYAnchor.constraint(equalTo: shufflePlayRewindStackView.centerYAnchor).isActive = true
+        timerButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        timerButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        shuffleButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        shuffleButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        previousButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        previousButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+
+        playPauseButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        playPauseButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+
+        nextButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
+        deviceButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        deviceButton.topAnchor.constraint(equalTo: shufflePlayRewindStackView.bottomAnchor, constant: 20).isActive = true
+        deviceButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        deviceButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
             
-        timerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
-        timerButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20).isActive = true
-        timerButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        timerButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
-            
-        shareButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+        shareButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         shareButton.topAnchor.constraint(equalTo: timerButton.bottomAnchor, constant: 20).isActive = true
-        shareButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        shareButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        shareButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
+        shareButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
             
-        deviceButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
-        deviceButton.topAnchor.constraint(equalTo: shuffleButton.bottomAnchor, constant: 20).isActive = true
-        deviceButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        deviceButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
 
     }
 }
