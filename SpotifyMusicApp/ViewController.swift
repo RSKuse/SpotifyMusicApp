@@ -8,8 +8,9 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var isPlaying = false
     
-    lazy var albumCoverImageView: UIImageView = {
+        lazy var albumCoverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "album_cover")
         imageView.contentMode = .scaleAspectFill
@@ -71,6 +72,7 @@ class ViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "play_icon"), for: .normal)
         button.tintColor = .white
+        button.addTarget(self, action: #selector(playPauseButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -120,7 +122,8 @@ class ViewController: UIViewController {
     lazy var durationSlider: UISlider = {
         let slider = UISlider()
         slider.minimumTrackTintColor = .white
-        slider.maximumTrackTintColor = .gray
+        slider.maximumTrackTintColor = .lightGray
+        //slider.setThumbImage(UIImage(), for: .normal)
         slider.translatesAutoresizingMaskIntoConstraints = false
         return slider
     }()
@@ -181,7 +184,6 @@ class ViewController: UIViewController {
         view.backgroundColor = .black
         setupUI()
     }
-    
     func setupUI() {
         
         view.addSubview(albumCoverImageView)
@@ -268,6 +270,11 @@ class ViewController: UIViewController {
         shareButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
         shareButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
             
-
+    }
+    
+    @objc func playPauseButtonTapped() {
+        isPlaying.toggle()
+        let buttonImage = isPlaying ? UIImage(named: "pause_icon") : UIImage(named: "play_icon")
+        playPauseButton.setImage(buttonImage, for: .normal)
     }
 }
