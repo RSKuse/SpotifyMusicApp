@@ -13,6 +13,7 @@
 		F3573CFA2C225A540030E86F /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F3573CF92C225A540030E86F /* Base */; };
 		F3573CFC2C225A560030E86F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3573CFB2C225A560030E86F /* Assets.xcassets */; };
 		F3573CFF2C225A560030E86F /* Base in Resources */ = {isa = PBXBuildFile; fileRef = F3573CFE2C225A560030E86F /* Base */; };
+		F3573D072C237B130030E86F /* SpotifyImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3573D062C237B130030E86F /* SpotifyImages.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		F3573CFB2C225A560030E86F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3573CFE2C225A560030E86F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F3573D002C225A560030E86F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3573D062C237B130030E86F /* SpotifyImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyImages.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				F3573CF22C225A540030E86F /* AppDelegate.swift */,
 				F3573CF42C225A540030E86F /* SceneDelegate.swift */,
 				F3573CF62C225A540030E86F /* ViewController.swift */,
+				F3573D062C237B130030E86F /* SpotifyImages.swift */,
 				F3573CF82C225A540030E86F /* Main.storyboard */,
 				F3573CFB2C225A560030E86F /* Assets.xcassets */,
 				F3573CFD2C225A560030E86F /* LaunchScreen.storyboard */,
@@ -140,6 +143,7 @@
 			files = (
 				F3573CF72C225A540030E86F /* ViewController.swift in Sources */,
 				F3573CF32C225A540030E86F /* AppDelegate.swift in Sources */,
+				F3573D072C237B130030E86F /* SpotifyImages.swift in Sources */,
 				F3573CF52C225A540030E86F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
